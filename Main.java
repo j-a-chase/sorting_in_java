@@ -38,7 +38,9 @@ public class Main {
                     total = System.nanoTime() - startTime;
                     break;
                 case 3:
-                    // function
+                    startTime = System.nanoTime();
+                    mergeSort(test_arr, 0, n-1);
+                    total = System.nanoTime() - startTime;
                     break;
                 case 4:
                     // function
@@ -118,6 +120,56 @@ public class Main {
                 arr[end] = temp;
             }
             end--;
+        }
+    }
+
+    static void mergeSort(int[] arr, int l, int r) {
+        if (l < r) {
+            int m = (l + r) / 2;
+
+            mergeSort(arr, l, m);
+            mergeSort(arr, m+1, r);
+
+            merge(arr, l, m, r);
+        }
+    }
+
+    static void merge(int[] arr, int l, int m, int r) {
+        int ln = m - l + 1;
+        int rn = r - m;
+
+        int[] leftSide = new int[ln];
+        int[] rightSide = new int[rn];
+
+        for (int i = 0; i < ln; i++) {
+            leftSide[i] = arr[l + i];
+        }
+        for (int i = 0; i < rn; i++) {
+            rightSide[i] = arr[m + 1 + i];
+        }
+
+        int i = 0, j = 0, k = l;
+        while (i < ln && j < rn) {
+            if (leftSide[i] <= rightSide[j]) {
+                arr[k] = leftSide[i];
+                i++;
+            } else {
+                arr[k] = rightSide[j];
+                j++;
+            }
+            k++;
+        }
+
+        while (i < ln) {
+            arr[k] = leftSide[i];
+            i++;
+            k++;
+        }
+
+        while (j < rn) {
+            arr[k] = rightSide[j];
+            j++;
+            k++;
         }
     }
 }

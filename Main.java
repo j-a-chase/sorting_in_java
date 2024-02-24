@@ -33,7 +33,9 @@ public class Main {
                     total = System.nanoTime() - startTime;
                     break;
                 case 2:
-                    // function
+                    startTime = System.nanoTime();
+                    insertionSort(test_arr, n);
+                    total = System.nanoTime() - startTime;
                     break;
                 case 3:
                     // function
@@ -60,6 +62,7 @@ public class Main {
         System.out.println();
         System.out.println("#################################################");
         System.out.println("===== Enter desired size of array:          =====");
+        System.out.println("===== Size for good comparisons: 100000     =====");
         System.out.println("#################################################");
     }
 
@@ -78,6 +81,11 @@ public class Main {
         return new Random().ints(n, 0, n).toArray();
     }
 
+    static void printArray(int[] arr) {
+        for (int i : arr) System.out.print(i + " ");
+        System.out.println();
+    }
+
     static void bubbleSort(int[] arr, int n) {
         for (int i = 0; i < n - 1; i++) {
             for (int j = 0; j < n - i - 1; j++) {
@@ -87,6 +95,29 @@ public class Main {
                     arr[j+1] = temp;
                 }
             }
+        }
+    }
+
+    static void insertionSort(int[] arr, int n) {
+        int highest, highest_index;
+        int end = n-1;
+        while (end > 0) {
+            highest = arr[0];
+            highest_index = 0;
+
+            for (int i = 0; i < end-1; i++) {
+                if (arr[i] > highest) {
+                    highest = arr[i];
+                    highest_index = i;
+                }
+            }
+
+            if (highest > arr[end]) {
+                int temp = highest;
+                arr[highest_index] = arr[end];
+                arr[end] = temp;
+            }
+            end--;
         }
     }
 }

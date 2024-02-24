@@ -4,6 +4,7 @@
 
 // imports
 import java.util.Scanner;
+import java.util.InputMismatchException;
 import java.util.Random;
 
 public class Main {
@@ -12,8 +13,14 @@ public class Main {
         System.out.print("> ");
 
         Scanner input = new Scanner(System.in);
-        int n = input.nextInt();
-        System.out.println();
+
+        int n;
+        try {
+            n = input.nextInt();
+        } catch (InputMismatchException e) {
+            n = 100000;
+        }
+        if (n < 0) n *= -1;
 
         int[] test_arr = generateArray(n);
 
@@ -24,7 +31,12 @@ public class Main {
         long startTime, total;
         startTime = total = 0;
         while (response == -1) {
-            response = input.nextInt();
+            input = new Scanner(System.in);
+            try {
+                response = input.nextInt();
+            } catch (InputMismatchException e) {
+                response = -1;
+            }
 
             switch(response) {
                 case 1:
@@ -43,7 +55,9 @@ public class Main {
                     total = System.nanoTime() - startTime;
                     break;
                 case 4:
-                    // function
+                    startTime = System.nanoTime();
+                    quickSort(test_arr, 0, n-1);
+                    total = System.nanoTime() - startTime;
                     break;
                 default:
                     System.out.println("Error: Invalid input");
@@ -53,7 +67,6 @@ public class Main {
                     break;
             }
         }
-        input.close();
         System.out.println("Algorithm performance: " + (total / 1000000) + " milliseconds.");
     }
 
@@ -69,6 +82,7 @@ public class Main {
     }
 
     static void menu2() {
+        System.out.println();
         System.out.println("#################################################");
         System.out.println("===== Select an algorithm:                  =====");
         System.out.println("=====                                       =====");
@@ -171,5 +185,35 @@ public class Main {
             j++;
             k++;
         }
+    }
+
+    static void quickSort(int[] arr, int l, int r) {
+        if (l < r) {
+            int p = partition(arr, l, r);
+
+            quickSort(arr, l, p-1);
+            quickSort(arr, p+1, r);
+        }
+    }
+
+    static int partition(int[] arr, int l, int r) {
+        int piv = arr[r];
+        int i = l - 1;
+        
+        for (int j = l; j < r; j++) {
+            if (arr[j] <= piv) {
+                i++;
+
+                int temp = arr[i];
+                arr[i] = arr[j];
+                arr[j] = temp;
+            }
+        }
+
+        int temp = arr[i+1];
+        arr[i+1] = arr[r];
+        arr[r] = temp;
+
+        return i + 1;
     }
 }

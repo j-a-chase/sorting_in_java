@@ -19,6 +19,7 @@ public class Main {
             n = input.nextInt();
         } catch (InputMismatchException e) {
             n = 100000;
+            input.next();
         }
         if (n < 0) n *= -1;
 
@@ -31,11 +32,11 @@ public class Main {
         long startTime, total;
         startTime = total = 0;
         while (response == -1) {
-            input = new Scanner(System.in);
             try {
                 response = input.nextInt();
             } catch (InputMismatchException e) {
                 response = -1;
+                input.next();
             }
 
             switch(response) {
@@ -67,6 +68,7 @@ public class Main {
                     break;
             }
         }
+        input.close();
         System.out.println("Algorithm performance: " + (total / 1000000) + " milliseconds.");
     }
 
